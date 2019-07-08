@@ -9,14 +9,16 @@ class MaterialManager : public QObject
     Q_OBJECT
 public:
     MaterialManager();
-    Material *material() const;
+    MaterialNormalDiffuseSpecular *floridaPlateMaterial() const;
+    MaterialTexture *orangeMaskMaterial() const;
 
 public slots:
     void randomize();
 
 private:
     TextureGenerator texGen;
-    Material *floridaPlate;
+    MaterialNormalDiffuseSpecular *floridaPlate;
+    MaterialTexture *orangeMask;
 };
 
 #endif // MATERIALMANAGER_H

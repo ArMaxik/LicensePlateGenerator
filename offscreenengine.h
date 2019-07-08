@@ -16,8 +16,9 @@
 // The OffscreenEngine brings together various Qt3D classes that are required in order to
 // perform basic scene rendering. Of these, the most important for this project is the OffscreenSurfaceFrameGraph.
 // Render captures can be requested, and the capture contents used within other widgets (see OffscreenEngineDelegate).
-class OffscreenEngine
+class OffscreenEngine : public QObject
 {
+    Q_OBJECT
 public:
     OffscreenEngine(Qt3DRender::QCamera *camera, const QSize &size);
     ~OffscreenEngine();
@@ -25,6 +26,16 @@ public:
     void setSceneRoot(Qt3DCore::QNode *sceneRoot);
     Qt3DRender::QRenderCapture *getRenderCapture();
     void setSize(const QSize &size);
+
+signals:
+    void imageRendered(QImage image);
+
+public slots:
+    void requestRenderCapture();
+    void setClearColor(const QColor &color);
+
+private slots:
+    void onImageRendered();
 
 private:
     // We need all of the following in order to render a scene:
@@ -35,6 +46,8 @@ private:
     Qt3DRender::QRenderCapture *renderCapture;          // The render capture node, which is appended to the frame graph.
     OffscreenSurfaceFrameGraph *offscreenFrameGraph;    // The frame graph, which allows rendering to an offscreen surface.
     Qt3DCore::QNode *sceneRoot;                         // The scene root, which becomes a child of the engine's root entity.
+
+    Qt3DRender::QRenderCaptureReply *reply;
 };
 
 #endif // OFFSCREENENGINE_H

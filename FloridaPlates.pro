@@ -24,22 +24,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+    licenseplatemanager.cpp \
         main.cpp \
     material.cpp \
+    offscreenengine.cpp \
+    offscreensurfaceframegraph.cpp \
     texturegenerator.cpp \
     materialmanager.cpp \
     scene.cpp \
     renderableentity.cpp \
-    light.cpp
+    light.cpp \
+    texturerendertarget.cpp
 
 HEADERS += \
+    licenseplatemanager.h \
     material.h \
+    offscreenengine.h \
+    offscreensurfaceframegraph.h \
     texturegenerator.h \
     materialmanager.h \
     scene.h \
     imagetexture.h \
     renderableentity.h \
-    light.h
+    light.h \
+    texturerendertarget.h
 
 RESOURCES += \
     res.qrc

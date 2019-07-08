@@ -104,7 +104,9 @@ void TextureGenerator::generateTexture()
     QImage *diffuse = new QImage(280, 140, QImage::Format_RGB32);
     QPainter painterD(diffuse);
     QImage *height = new QImage(280, 140, QImage::Format_RGB32);
-    QPainter painterN(height);
+    QPainter painterH(height);
+    QImage *orangeMask = new QImage(280, 140, QImage::Format_RGB32);
+    QPainter painterOM(orangeMask);
 
     QString mainLbl1 = gen_random_main_label(3);
     QString mainLbl2 = gen_random_main_label(3);
@@ -129,23 +131,41 @@ void TextureGenerator::generateTexture()
     painterD.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
 
     // Normal
-    painterN.setPen(Qt::white);
-    painterN.setBrush(Qt::white);
-    painterN.drawRect(height->rect());
+    painterH.setPen(Qt::white);
+    painterH.setBrush(Qt::white);
+    painterH.drawRect(height->rect());
 
-    painterN.setPen(Qt::black);
+    painterH.setPen(Qt::black);
     font.setPixelSize(68);
-    painterN.setFont(font);
+    painterH.setFont(font);
 
-    painterN.drawText(12, 42, 280, 140, 0, mainLbl1);
-    painterN.drawText(175, 42, 280, 140, 0, mainLbl2);
+    painterH.drawText(12, 42, 280, 140, 0, mainLbl1);
+    painterH.drawText(175, 42, 280, 140, 0, mainLbl2);
 
     font.setPixelSize(18);
-    painterN.setFont(font);
-    painterN.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
+    painterH.setFont(font);
+    painterH.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
+
+    // Orange mask
+    QImage backOM("C:/Users/slava/OneDrive/Job/pic/OrangeMask_small.png");
+    painterOM.drawImage(QPoint(0, 0), backOM);
+
+    font.setPixelSize(68);
+    painterOM.setFont(font);
+    painterOM.setPen(Qt::black);
+
+    painterOM.drawText(12, 42, 280, 140, 0, mainLbl1);
+    painterOM.drawText(175, 42, 280, 140, 0, mainLbl2);
+
+    font.setPixelSize(18);
+    painterOM.setFont(font);
+    painterOM.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
 
     QImage *normal = height2Normal(height);
-    painterN.end();
+    painterH.end();
     delete height;
-    emit textureGenerated(diffuse, normal);
+//    emit textureGenerated(diffuse, normal);
+    emit diffuseGenerated(diffuse);
+    emit normalGenerated(normal);
+    emit orangeMaskGenerated(orangeMask);
 }

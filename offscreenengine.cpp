@@ -3,6 +3,7 @@
 OffscreenEngine::OffscreenEngine(Qt3DRender::QCamera *camera, const QSize &size)
 {
     sceneRoot = nullptr;
+    reply = nullptr;
 
     // Set up the engine and the aspects that we want to use.
     aspectEngine = new Qt3DCore::QAspectEngine();
@@ -40,6 +41,8 @@ OffscreenEngine::OffscreenEngine(Qt3DRender::QCamera *camera, const QSize &size)
 
 OffscreenEngine::~OffscreenEngine()
 {
+    delete reply;
+
     // Setting a null root entity shuts down the engine.
     aspectEngine->setRootEntity(Qt3DCore::QEntityPtr());
 
@@ -74,4 +77,21 @@ Qt3DRender::QRenderCapture* OffscreenEngine::getRenderCapture()
 void OffscreenEngine::setSize(const QSize &size)
 {
     offscreenFrameGraph->setSize(size);
+}
+
+void OffscreenEngine::requestRenderCapture()
+{
+    delete reply;
+    reply = renderCapture->requestCapture();
+    connect(reply, SIGNAL(completed()), this, SLOT(onImageRendered()));
+}
+
+void OffscreenEngine::setClearColor(const QColor &color)
+{
+    offscreenFrameGraph->getClearBuffers()->setClearColor(color);
+}
+
+void OffscreenEngine::onImageRendered()
+{
+    emit imageRendered(reply->image());
 }

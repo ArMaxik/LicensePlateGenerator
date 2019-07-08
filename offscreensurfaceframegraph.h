@@ -23,6 +23,7 @@ public:
 
     void setSize(const QSize &size);
     Qt3DCore::QNode *getRenderTargetSelector();
+    Qt3DRender::QClearBuffers *getClearBuffers();
 
 private:
     TextureRenderTarget *textureTarget;

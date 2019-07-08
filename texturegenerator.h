@@ -16,7 +16,9 @@ public:
 public slots:
     void generateTexture();
 signals:
-    void textureGenerated(QImage *diffuse, QImage *normal);
+    void diffuseGenerated(QImage *diffuse);
+    void normalGenerated(QImage *normal);
+    void orangeMaskGenerated(QImage *orangeMask);
 private:
     int id;
 };

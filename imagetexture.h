@@ -23,9 +23,11 @@ public slots:
     void setImage(QImage *_image)
     {
         QImage *buf = image;
-        image = _image;         // Скорее всего здесь утечка........
+        image = _image;
         delete  buf;
         setSize(image->size());
+
+        update();
     }
 
 protected:
