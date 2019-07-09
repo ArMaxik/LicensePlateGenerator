@@ -14,7 +14,12 @@ LicensePlateManager::LicensePlateManager(QObject *parent)
     QObject::connect(renderEngine, &OffscreenEngine::imageRendered,
                      this, &LicensePlateManager::acceptRenderedImage);
 
-    num = 50;
+    num = 100;
+}
+
+Scene *LicensePlateManager::getScene()
+{
+    return plateScene;
 }
 
 void LicensePlateManager::newPlate()
@@ -40,6 +45,13 @@ void LicensePlateManager::newPlate()
             break;
         }
     }
+}
+
+void LicensePlateManager::Preview()
+{
+    plateScene->randomize();
+    configurePlateImage();
+    renderEngine->requestRenderCapture();
 }
 
 void LicensePlateManager::acceptRenderedImage(QImage img)

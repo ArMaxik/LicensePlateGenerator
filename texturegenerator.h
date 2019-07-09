@@ -19,6 +19,7 @@ signals:
     void diffuseGenerated(QImage *diffuse);
     void normalGenerated(QImage *normal);
     void orangeMaskGenerated(QImage *orangeMask);
+    void heightGenerated(QImage *height);
 private:
     int id;
 };

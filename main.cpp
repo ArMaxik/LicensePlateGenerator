@@ -12,6 +12,7 @@
 #include "scene.h"
 
 #include "licenseplatemanager.h"
+#include "textureview.h"
 
 int main(int argc, char *argv[])
 {
@@ -51,16 +52,32 @@ int main(int argc, char *argv[])
     LicensePlateManager lpm;
 
     //lpm.newPlate();
+    TextureView *tv = new TextureView;
 
     QWidget *widget = new QWidget;
+
     QPushButton *genButton = new QPushButton();
     genButton->setText("Generate");
     genButton->setMaximumWidth(100);
+    QPushButton *prevButton = new QPushButton();
+    prevButton->setText("Preview");
+    prevButton->setMaximumWidth(100);
     QHBoxLayout *hLayout = new QHBoxLayout(widget);
     hLayout->setMargin(150);
     hLayout->addWidget(genButton);
+    hLayout->addWidget(prevButton);
     QObject::connect(genButton, &QPushButton::clicked, &lpm, &LicensePlateManager::newPlate);
+    QObject::connect(prevButton, &QPushButton::clicked, &lpm, &LicensePlateManager::Preview);
+
+    QObject::connect(lpm.getScene()->getMaterialManager()->getGenerator(), &TextureGenerator::diffuseGenerated,
+                     tv, &TextureView::setImageD);
+    QObject::connect(lpm.getScene()->getMaterialManager()->getGenerator(), &TextureGenerator::heightGenerated,
+                     tv, &TextureView::setImageH);
+    QObject::connect(lpm.getScene()->getMaterialManager()->getGenerator(), &TextureGenerator::normalGenerated,
+                     tv, &TextureView::setImageN);
+
     widget->show();
+    tv->show();
 
 
     return app.exec();

@@ -2,6 +2,7 @@
 
 #include <QRandomGenerator>
 #include <QVector3D>
+#include <QtMath>
 
 QString gen_random_main_label(const int len) {
     static const char alphanum[] =
@@ -46,6 +47,59 @@ TextureGenerator::TextureGenerator()
     id = QFontDatabase::addApplicationFont(":/fonts/PlateFont.ttf");
 }
 
+QVector<int> boxesForGauss(double sigma, int n)  // standard deviation, number of boxes
+{
+    double wIdeal = qSqrt((12.0 * sigma * sigma/n) + 1.0);  // Ideal averaging filter width
+    int wl = qFloor(wIdeal);
+    if(wl % 2 == 0) wl--;
+    int wu = wl+2;
+
+    double mIdeal = (12.0*sigma*sigma - n*wl*wl - 4.0*n*wl - 3*n) / (-4.0*wl - 4.0);
+    int m = qRound(mIdeal);
+
+    QVector<int> sizes;
+    for(int i=0; i < n; i++)
+    {
+        sizes.append(i < m ? wl : wu);
+    }
+    return sizes;
+}
+// source channel, radius
+void boxBlur(QImage* scr, QImage* res, int r) {
+    int w = scr->size().width();
+    int h = scr->size().height();
+//    QImage *blurred = new QImage(280, 140, QImage::Format_RGB32);
+    for(int i = 0; i < h; i++)
+        for(int j = 0; j < w; j++) {
+            int val = 0;
+            int valG = 0;
+            int valB = 0;
+            for(int iy = i-r; iy < i+r+1; iy++)
+                for(int ix = j-r; ix < j+r+1; ix++) {
+                    int x = qMin(w-1, qMax(0, ix));
+                    int y = qMin(h-1, qMax(0, iy));
+                    val += scr->pixelColor(x, y).black();
+//                    valG += scr->pixelColor(x, y).green();
+//                    valB += scr->pixelColor(x, y).blue();
+                }
+            val = val/((r+r+1)*(r+r+1));
+            res->setPixelColor(j, i, QColor(val, val, val));
+        }
+//    scr->swap(*blurred);
+//    delete blurred;
+}
+// source channel, radius
+QImage* gaussBlur (QImage* scr, int r) {
+    QVector<int> bxs = boxesForGauss(r, 3);
+    QImage *blurred = new QImage(280, 140, QImage::Format_RGB32);
+
+    boxBlur(scr, blurred, (bxs[0]-1)/2);
+    boxBlur(blurred, scr, (bxs[1]-1)/2);
+    boxBlur(scr, blurred, (bxs[2]-1)/2);
+
+    return blurred;
+}
+
 QVector<int> getBlackNeighComps(QImage *img, int x, int y)
 {
     static QPoint indexes[] = {
@@ -70,16 +124,16 @@ QVector<int> getBlackNeighComps(QImage *img, int x, int y)
     return res;
 }
 
-QImage* height2Normal(QImage *img)
+QImage* height2Normal(QImage *height)
 {
     QImage *normal = new QImage(280, 140, QImage::Format_RGB32);
     QPainter painterD(normal);
 
-    static float scale = 1.0;
-    for(int i = 0; i < img->height(); i++) {
-        for(int j = 0; j < img->width(); j++) {
+    static float scale = 0.003f;
+    for(int i = 0; i < height->height(); i++) {
+        for(int j = 0; j < height->width(); j++) {
             QVector3D n;
-            auto s = getBlackNeighComps(img, j, i);
+            auto s = getBlackNeighComps(height, j, i);
             n.setX(scale * -(s[2]-s[0]+2*(s[5]-s[3])+s[8]-s[6]));
             n.setY(scale * -(s[6]-s[0]+2*(s[7]-s[1])+s[8]-s[2]));
             n.setZ(1.0);
@@ -130,12 +184,12 @@ void TextureGenerator::generateTexture()
     painterD.setFont(font);
     painterD.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
 
-    // Normal
-    painterH.setPen(Qt::white);
-    painterH.setBrush(Qt::white);
+    // Height
+    painterH.setPen(Qt::black);
+    painterH.setBrush(Qt::black);
     painterH.drawRect(height->rect());
 
-    painterH.setPen(Qt::black);
+    painterH.setPen(Qt::white);
     font.setPixelSize(68);
     painterH.setFont(font);
 
@@ -161,10 +215,14 @@ void TextureGenerator::generateTexture()
     painterOM.setFont(font);
     painterOM.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
 
-    QImage *normal = height2Normal(height);
+    QImage* height_b = gaussBlur(height, 2);
+
+    QImage *normal = height2Normal(height_b);
     painterH.end();
     delete height;
+//    delete height_b;
 //    emit textureGenerated(diffuse, normal);
+    emit heightGenerated(height_b);
     emit diffuseGenerated(diffuse);
     emit normalGenerated(normal);
     emit orangeMaskGenerated(orangeMask);

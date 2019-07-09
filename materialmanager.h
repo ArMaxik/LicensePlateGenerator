@@ -11,6 +11,7 @@ public:
     MaterialManager();
     MaterialNormalDiffuseSpecular *floridaPlateMaterial() const;
     MaterialTexture *orangeMaskMaterial() const;
+    TextureGenerator *getGenerator();
 
 public slots:
     void randomize();

@@ -11,11 +11,13 @@ class LicensePlateManager : public QObject
     Q_OBJECT
 public:
     explicit LicensePlateManager(QObject *parent = nullptr);
+    Scene *getScene();
 
 signals:
 
 public slots:
     void newPlate();
+    void Preview();
 
 private slots:
     void acceptRenderedImage(QImage img);

@@ -22,6 +22,11 @@ MaterialTexture *MaterialManager::orangeMaskMaterial() const
     return orangeMask;
 }
 
+TextureGenerator *MaterialManager::getGenerator()
+{
+    return &texGen;
+}
+
 void MaterialManager::randomize()
 {
     texGen.generateTexture();
