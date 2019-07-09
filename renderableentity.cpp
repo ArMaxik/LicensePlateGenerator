@@ -8,10 +8,11 @@ RenderableEntity::RenderableEntity(Qt3DCore::QNode *parent, Qt3DRender::QMateria
     , m_transform(new Qt3DCore::QTransform())
     , m_material(material)
 {
-    m_mesh->setHeight(1.0);
-    m_mesh->setWidth(2.0);
+    m_mesh->setHeight(5.0f);
+    m_mesh->setWidth(10.0f);
 
-    m_transform->setScale3D(QVector3D(5.0, 5.0, 5.0));
+    m_transform->setScale(1.0f);
+    m_transform->setTranslation(QVector3D(0.0f, 5.0f, 0.0f));
     m_transform->setRotationX(QRandomGenerator::global()->bounded(-200, 200)/10);
     m_transform->setRotationY(QRandomGenerator::global()->bounded(-200, 200)/10);
     m_transform->setRotationZ(QRandomGenerator::global()->bounded(-200, 200)/10);

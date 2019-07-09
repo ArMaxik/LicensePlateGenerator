@@ -14,7 +14,7 @@ LicensePlateManager::LicensePlateManager(QObject *parent)
     QObject::connect(renderEngine, &OffscreenEngine::imageRendered,
                      this, &LicensePlateManager::acceptRenderedImage);
 
-    num = 3;
+    num = 50;
 }
 
 void LicensePlateManager::newPlate()
@@ -35,6 +35,7 @@ void LicensePlateManager::newPlate()
             break;
         case state::WaitingOrangeMask:
             currentState = state::Done;
+            num--;
             newPlate();
             break;
         }
@@ -43,8 +44,13 @@ void LicensePlateManager::newPlate()
 
 void LicensePlateManager::acceptRenderedImage(QImage img)
 {
-    QTextStream(stdout) << QString("pic/tmp") + QString::number(num) + QString(".png") << endl;
-    img.save(QString("pic/tmp") + QString::number(num--) + QString(".png"));
+    QString name = "pic/tmp_";
+    if(currentState == state::WaitingOrangeMask) {
+        name += "OM_";
+    }
+    name += QString::number(num) + QString(".png");
+    QTextStream(stdout) << name << endl;
+    img.save(name);
     newPlate();
 }
 
