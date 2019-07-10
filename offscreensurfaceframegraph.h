@@ -6,6 +6,9 @@
 #include <QOffscreenSurface>
 #include <Qt3DRender/QRenderSurfaceSelector>
 #include <Qt3DRender/QRenderTargetSelector>
+#include <Qt3DRender/QRenderStateSet>
+#include <Qt3DRender/QMultiSampleAntiAliasing>
+#include <Qt3DRender/QDepthTest>
 #include <Qt3DRender/QViewport>
 #include <Qt3DRender/QClearBuffers>
 #include <Qt3DRender/QCameraSelector>

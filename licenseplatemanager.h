@@ -14,9 +14,16 @@ public:
     Scene *getScene();
 
 signals:
+    void imageGenerated(int progress);
+    void previewGenerated(QImage *img);
+
+
 
 public slots:
-    void newPlate();
+    void generate(int number, const QString &_savePath);
+    void setRenderSize(const QSize &size);
+    void setTextureSize(const QSize &size);
+    void newPlate();  // Make private
     void Preview();
 
 private slots:
@@ -33,6 +40,9 @@ private:
     Scene *plateScene;
 
     int num;
+    int totalNum;
+
+    QString savePath;
 };
 
 #endif // LICENSEPLATEMANAGER_H

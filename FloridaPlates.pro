@@ -26,6 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     licenseplatemanager.cpp \
         main.cpp \
+    mainwidget.cpp \
     material.cpp \
     offscreenengine.cpp \
     offscreensurfaceframegraph.cpp \
@@ -39,6 +40,7 @@ SOURCES += \
 
 HEADERS += \
     licenseplatemanager.h \
+    mainwidget.h \
     material.h \
     offscreenengine.h \
     offscreensurfaceframegraph.h \
@@ -53,3 +55,6 @@ HEADERS += \
 
 RESOURCES += \
     res.qrc
+
+FORMS += \
+    mainwidget.ui

@@ -10,6 +10,8 @@ TextureView::TextureView(QWidget *parent)
     labelN = new QLabel(this);
     labelN->setGeometry(QRect(0, 0, 280, 140));
 
+    resize(200, 200);
+
     QVBoxLayout *vLayout = new QVBoxLayout(this);
     vLayout->setMargin(25);
     vLayout->addWidget(labelD);

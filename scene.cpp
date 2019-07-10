@@ -4,7 +4,7 @@ Scene::Scene(Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
     , matMan(new MaterialManager())
     , licensePlate(new RenderableEntity(this, matMan->orangeMaskMaterial()))
-    , light(new Light(this))
+    , lightMan(new LightManager(this))
     , camera(new Qt3DRender::QCamera(this))
 {
     camera->lens()->setPerspectiveProjection(35.0f, 1.0f, 0.1f, 1000.0f);
@@ -23,9 +23,9 @@ RenderableEntity *Scene::getRenderableEntity() const
     return licensePlate;
 }
 
-Light *Scene::getLight() const
+LightManager *Scene::getLight() const
 {
-    return light;
+    return lightMan;
 }
 
 Qt3DRender::QCamera* Scene::getCamera() const
@@ -37,7 +37,7 @@ void Scene::randomize()
 {
     matMan->randomize();
     licensePlate->randomize();
-    light->randomize();
+    lightMan->randomize();
 
     emit changed();
 }

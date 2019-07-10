@@ -16,7 +16,7 @@ public:
 
     MaterialManager *getMaterialManager() const;
     RenderableEntity *getRenderableEntity() const;
-    Light *getLight() const;
+    LightManager *getLight() const;
     Qt3DRender::QCamera *getCamera() const;
 
 signals:
@@ -28,7 +28,7 @@ public slots:
 private:
     MaterialManager *matMan;
     RenderableEntity *licensePlate;
-    Light *light;
+    LightManager *lightMan;
     Qt3DRender::QCamera *camera;
 };
 

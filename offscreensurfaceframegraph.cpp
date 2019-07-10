@@ -2,6 +2,8 @@
 /*
  * An overview of the frame graph used by this class:
  *
+ *                 (0)|   QRenderStateSet    |
+ *                               V
  *                 (1)| RenderTargetSelector |
  *                               |
  *                      +=================+
@@ -42,9 +44,18 @@ OffscreenSurfaceFrameGraph::OffscreenSurfaceFrameGraph(Qt3DCore::QNode* parent, 
     setSurface(offscreenSurface);
     setExternalRenderTargetSize(size);
 
+    // For antialiasing
+    Qt3DRender::QRenderStateSet *renderStateSet = new Qt3DRender::QRenderStateSet(this);
+
+    Qt3DRender::QMultiSampleAntiAliasing *msaa = new Qt3DRender::QMultiSampleAntiAliasing;
+    renderStateSet->addRenderState(msaa);
+    Qt3DRender::QDepthTest *depthTest = new Qt3DRender::QDepthTest;
+    depthTest->setDepthFunction(Qt3DRender::QDepthTest::LessOrEqual);
+    renderStateSet->addRenderState(depthTest);
+
     // Create a texture to render into. This acts as the buffer that
     // holds the rendered image.
-    renderTargetSelector = new Qt3DRender::QRenderTargetSelector(this);
+    renderTargetSelector = new Qt3DRender::QRenderTargetSelector(renderStateSet);
     textureTarget = new TextureRenderTarget(renderTargetSelector, size);
     renderTargetSelector->setTarget(textureTarget);
 

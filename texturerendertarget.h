@@ -17,15 +17,15 @@ public:
 
     void setSize(const QSize &size);
     QSize getSize() { return size; }
-    Qt3DRender::QTexture2D* getTexture();
+    Qt3DRender::QTexture2DMultisample* getTexture();
 
 private:
     QSize size;
     Qt3DRender::QRenderTargetOutput *output;
-    Qt3DRender::QTexture2D *texture;
+    Qt3DRender::QTexture2DMultisample  *texture;
     // To enable depth testing
     Qt3DRender::QRenderTargetOutput *depthTextureOutput;
-    Qt3DRender::QTexture2D *depthTexture;
+    Qt3DRender::QTexture2DMultisample  *depthTexture;
 };
 
 #endif // TEXTURERENDERTARGET_H
