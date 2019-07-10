@@ -4,15 +4,29 @@
 #include <QVector3D>
 #include <QtMath>
 
-QString gen_random_main_label(const int len) {
+QString gen_random_main_label1() {
     static const char alphanum[] =
-        "0123456789"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     QString res;
 
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; i < 3; ++i) {
         res += alphanum[QRandomGenerator::global()->bounded((int)sizeof(alphanum)-1)];
+    }
+
+    return res;
+}
+
+QString gen_random_main_label2() {
+    static const char num[] =
+            "0123456789";
+    static const char alpha[] =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    QString res;
+    res += alpha[QRandomGenerator::global()->bounded((int)sizeof(alpha)-1)];
+    for (int i = 0; i < 2; ++i) {
+        res += num[QRandomGenerator::global()->bounded((int)sizeof(num)-1)];
     }
 
     return res;
@@ -44,7 +58,7 @@ QString gen_random_small_str(const int min, const int max) {
 
 TextureGenerator::TextureGenerator()
 {
-    id = QFontDatabase::addApplicationFont(":/fonts/PlateFont.ttf");
+    id = QFontDatabase::addApplicationFont(":/fonts/Driver Gothic.otf");
 }
 
 QVector<int> boxesForGauss(double sigma, int n)  // standard deviation, number of boxes
@@ -72,21 +86,15 @@ void boxBlur(QImage* scr, QImage* res, int r) {
     for(int i = 0; i < h; i++)
         for(int j = 0; j < w; j++) {
             int val = 0;
-            int valG = 0;
-            int valB = 0;
             for(int iy = i-r; iy < i+r+1; iy++)
                 for(int ix = j-r; ix < j+r+1; ix++) {
                     int x = qMin(w-1, qMax(0, ix));
                     int y = qMin(h-1, qMax(0, iy));
                     val += scr->pixelColor(x, y).black();
-//                    valG += scr->pixelColor(x, y).green();
-//                    valB += scr->pixelColor(x, y).blue();
                 }
             val = val/((r+r+1)*(r+r+1));
             res->setPixelColor(j, i, QColor(val, val, val));
         }
-//    scr->swap(*blurred);
-//    delete blurred;
 }
 // source channel, radius
 QImage* gaussBlur (QImage* scr, int r) {
@@ -153,8 +161,30 @@ QImage* height2Normal(QImage *height)
     return normal;
 }
 
+void drawText(QPainter &painter, QFont &font, const QColor &color, QString &mainLbl1, QString &mainLbl2, QString &smallLbl) {
+    const int bigLblSize = 85;
+    const int smallLblSize = 20;
+    font.setPixelSize(bigLblSize);
+    font.setLetterSpacing(QFont::PercentageSpacing, 100);
+    font.setBold(false);
+    painter.setFont(font);
+    painter.setPen(color);
+
+    painter.drawText(12, 22, 280, 140, 0, mainLbl1);
+    font.setLetterSpacing(QFont::PercentageSpacing, 95);
+    painter.setFont(font);
+    painter.drawText(170, 22, 280, 140, 0, mainLbl2);
+
+    font.setPixelSize(smallLblSize);
+    font.setLetterSpacing(QFont::PercentageSpacing, 120);
+    font.setBold(true);
+    painter.setFont(font);
+    painter.drawText(0, 115, 280, 140, Qt::AlignHCenter, smallLbl);
+}
+
 void TextureGenerator::generateTexture()
 {
+
     QImage *diffuse = new QImage(280, 140, QImage::Format_RGB32);
     QPainter painterD(diffuse);
     QImage *height = new QImage(280, 140, QImage::Format_RGB32);
@@ -162,8 +192,8 @@ void TextureGenerator::generateTexture()
     QImage *orangeMask = new QImage(280, 140, QImage::Format_RGB32);
     QPainter painterOM(orangeMask);
 
-    QString mainLbl1 = gen_random_main_label(3);
-    QString mainLbl2 = gen_random_main_label(3);
+    QString mainLbl1 = gen_random_main_label1();
+    QString mainLbl2 = gen_random_main_label2();
     QString smallLbl = gen_random_small_str(6, 12);
 
     QString family = QFontDatabase::applicationFontFamilies(id).at(0);
@@ -173,47 +203,20 @@ void TextureGenerator::generateTexture()
     QImage back("C:/Users/slava/OneDrive/Job/pic/MyFLORIDA_small.png");
     painterD.drawImage(QPoint(0, 0), back);
 
-    font.setPixelSize(68);
-    painterD.setFont(font);
-    painterD.setPen(QColor(17, 141, 128));
-
-    painterD.drawText(12, 42, 280, 140, 0, mainLbl1);
-    painterD.drawText(175, 42, 280, 140, 0, mainLbl2);
-
-    font.setPixelSize(18);
-    painterD.setFont(font);
-    painterD.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
+    drawText(painterD, font, QColor(17, 141, 128), mainLbl1, mainLbl2, smallLbl);
 
     // Height
     painterH.setPen(Qt::black);
     painterH.setBrush(Qt::black);
     painterH.drawRect(height->rect());
 
-    painterH.setPen(Qt::white);
-    font.setPixelSize(68);
-    painterH.setFont(font);
-
-    painterH.drawText(12, 42, 280, 140, 0, mainLbl1);
-    painterH.drawText(175, 42, 280, 140, 0, mainLbl2);
-
-    font.setPixelSize(18);
-    painterH.setFont(font);
-    painterH.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
+    drawText(painterH, font, Qt::white, mainLbl1, mainLbl2, smallLbl);
 
     // Orange mask
     QImage backOM("C:/Users/slava/OneDrive/Job/pic/OrangeMask_small.png");
     painterOM.drawImage(QPoint(0, 0), backOM);
 
-    font.setPixelSize(68);
-    painterOM.setFont(font);
-    painterOM.setPen(Qt::black);
-
-    painterOM.drawText(12, 42, 280, 140, 0, mainLbl1);
-    painterOM.drawText(175, 42, 280, 140, 0, mainLbl2);
-
-    font.setPixelSize(18);
-    painterOM.setFont(font);
-    painterOM.drawText(0, 118, 280, 140, Qt::AlignHCenter, smallLbl);
+    drawText(painterOM, font, Qt::black, mainLbl1, mainLbl2, smallLbl);
 
     QImage* height_b = gaussBlur(height, 2);
 
@@ -221,7 +224,6 @@ void TextureGenerator::generateTexture()
     painterH.end();
     delete height;
 //    delete height_b;
-//    emit textureGenerated(diffuse, normal);
     emit heightGenerated(height_b);
     emit diffuseGenerated(diffuse);
     emit normalGenerated(normal);

@@ -13,8 +13,8 @@ LicensePlateManager::LicensePlateManager(QObject *parent)
 //                     renderEngine, &OffscreenEngine::requestRenderCapture);
     QObject::connect(renderEngine, &OffscreenEngine::imageRendered,
                      this, &LicensePlateManager::acceptRenderedImage);
-
-    num = 100;
+    plateScene->randomize();
+    num = 25;
 }
 
 Scene *LicensePlateManager::getScene()
@@ -61,7 +61,7 @@ void LicensePlateManager::acceptRenderedImage(QImage img)
         name += "OM_";
     }
     name += QString::number(num) + QString(".png");
-    QTextStream(stdout) << name << endl;
+//    QTextStream(stdout) << name << endl;
     img.save(name);
     newPlate();
 }
