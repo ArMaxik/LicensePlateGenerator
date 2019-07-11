@@ -8,16 +8,16 @@ class MaterialManager : public QObject
 {
     Q_OBJECT
 public:
-    MaterialManager();
+    MaterialManager(QObject *parent = nullptr);
     MaterialNormalDiffuseSpecular *floridaPlateMaterial() const;
     MaterialTexture *orangeMaskMaterial() const;
-    TextureGenerator *getGenerator();
+    TextureGenerator *getGenerator() const;
 
 public slots:
     void randomize();
 
 private:
-    TextureGenerator texGen;
+    TextureGenerator *texGen;
     MaterialNormalDiffuseSpecular *floridaPlate;
     MaterialTexture *orangeMask;
 };

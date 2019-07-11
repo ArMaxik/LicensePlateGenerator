@@ -20,7 +20,6 @@ public:
     Qt3DRender::QCamera *getCamera() const;
 
 signals:
-    void changed();
 
 public slots:
     void randomize();

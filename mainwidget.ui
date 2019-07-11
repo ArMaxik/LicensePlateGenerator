@@ -58,9 +58,6 @@
         <property name="singleStep">
          <number>100</number>
         </property>
-        <property name="stepType">
-         <enum>QAbstractSpinBox::DefaultStepType</enum>
-        </property>
        </widget>
       </item>
      </layout>

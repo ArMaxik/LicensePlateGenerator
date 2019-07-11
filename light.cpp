@@ -13,12 +13,12 @@ PointLight::PointLight(Qt3DCore::QNode *parent)
     addComponent(m_transform);
 }
 
-Qt3DRender::QPointLight *PointLight::getLight()
+Qt3DRender::QPointLight *PointLight::getLight() const
 {
     return m_light;
 }
 
-Qt3DCore::QTransform *PointLight::getTransform()
+Qt3DCore::QTransform *PointLight::getTransform() const
 {
     return m_transform;
 }
@@ -31,9 +31,9 @@ void PointLight::randomize()
 
     m_light->setIntensity(QRandomGenerator::global()->bounded(5, 12)/10.0f);
 
-    m_transform->setTranslation(QVector3D(QRandomGenerator::global()->bounded(-100, 100)/10,
-                                          QRandomGenerator::global()->bounded(-100, 100)/10 + 20.0,
-                                          QRandomGenerator::global()->bounded(-100, 100)/10));
+    m_transform->setTranslation(QVector3D(QRandomGenerator::global()->bounded(-100, 100) / 10.0f,
+                                          QRandomGenerator::global()->bounded(-100, 100) / 10.0f + 20.0f,
+                                          QRandomGenerator::global()->bounded(-100, 100) / 10.0f));
 }
 
 DirectionalLight::DirectionalLight(Qt3DCore::QNode *parent)

@@ -18,9 +18,7 @@ public:
 
 private slots:
     void on_buttonChoseSavePath_clicked();
-
     void on_buttonStopRender_clicked();
-
     void on_buttonGenerate_clicked();
 
 private:

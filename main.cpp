@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
     format.setSamples(8);
     QSurfaceFormat::setDefaultFormat(format);
 
-
     MainWidget mw;
 
     mw.show();

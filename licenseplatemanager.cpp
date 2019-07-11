@@ -11,10 +11,14 @@ LicensePlateManager::LicensePlateManager(QObject *parent)
 
     QObject::connect(renderEngine, &OffscreenEngine::imageRendered,
                      this, &LicensePlateManager::acceptRenderedImage);
+    // Перновачальная настройка сцены
     plateScene->randomize();
     configurePlateImage();
-    num = 25;
-    savePath = "pic/tmp_";
+}
+
+LicensePlateManager::~LicensePlateManager()
+{
+    delete renderEngine;
 }
 
 Scene *LicensePlateManager::getScene()
@@ -24,8 +28,8 @@ Scene *LicensePlateManager::getScene()
 
 void LicensePlateManager::generate(int number, const QString &_savePath)
 {
-    totalNum = number;
-    num = number;
+    totalRenders = number;
+    rendersNumber = number;
     savePath = _savePath;
     newPlate();
 }
@@ -42,13 +46,13 @@ void LicensePlateManager::setTextureSize(const QSize &size)
 
 void LicensePlateManager::stopRender()
 {
-    num = 0;
+    rendersNumber = 0;
     currentState = state::Done;
 }
 
 void LicensePlateManager::newPlate()
 {
-    if(num > 0)
+    if(rendersNumber > 0)
     {
         switch (currentState) {
         case state::Done:
@@ -64,8 +68,8 @@ void LicensePlateManager::newPlate()
             break;
         case state::WaitingOrangeMask:
             currentState = state::Done;
-            num--;
-            emit imageGenerated(totalNum - num);
+            rendersNumber--;
+            emit imageGenerated(totalRenders - rendersNumber);
             newPlate();
             break;
         }
@@ -85,8 +89,7 @@ void LicensePlateManager::acceptRenderedImage(QImage img)
     if(currentState == state::WaitingOrangeMask) {
         name += "OM_";
     }
-    name += QString::number(num) + QString(".png");
-//    QTextStream(stdout) << name << endl;
+    name += QString::number(rendersNumber) + QString(".png");
     img.save(name);
     newPlate();
 }

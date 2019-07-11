@@ -33,7 +33,7 @@ public slots:
 protected:
     void paint(QPainter *painter) override {
         if(image == nullptr)
-        {
+        {   //  Черный цвет, чтобы не было глянца
             painter->setPen(Qt::black);
             painter->setBrush(Qt::black);
             painter->drawRect(0, 0, size().width(), size().height());

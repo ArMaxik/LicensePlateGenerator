@@ -1,14 +1,16 @@
 #include "materialmanager.h"
 
-MaterialManager::MaterialManager()
-    : floridaPlate(new MaterialNormalDiffuseSpecular())
+MaterialManager::MaterialManager(QObject *parent)
+    : QObject (parent)
+    , texGen(new TextureGenerator(this))
+    , floridaPlate(new MaterialNormalDiffuseSpecular())
     , orangeMask(new MaterialTexture())
 {
-    QObject::connect(&texGen, &TextureGenerator::diffuseGenerated,
+    QObject::connect(texGen, &TextureGenerator::diffuseGenerated,
                          floridaPlate->getDiffuseTexture(), &ImageTexture::setImage);
-    QObject::connect(&texGen, &TextureGenerator::normalGenerated,
+    QObject::connect(texGen, &TextureGenerator::normalGenerated,
                      floridaPlate->getNormalTexture(), &ImageTexture::setImage);
-    QObject::connect(&texGen, &TextureGenerator::orangeMaskGenerated,
+    QObject::connect(texGen, &TextureGenerator::orangeMaskGenerated,
                      orangeMask->getTexture(), &ImageTexture::setImage);
 }
 
@@ -22,12 +24,12 @@ MaterialTexture *MaterialManager::orangeMaskMaterial() const
     return orangeMask;
 }
 
-TextureGenerator *MaterialManager::getGenerator()
+TextureGenerator *MaterialManager::getGenerator() const
 {
-    return &texGen;
+    return texGen;
 }
 
 void MaterialManager::randomize()
 {
-    texGen.generateTexture();
+    texGen->generateTexture();
 }

@@ -43,6 +43,7 @@ HEADERS += \
     material.h \
     offscreenengine.h \
     offscreensurfaceframegraph.h \
+    texgenhelpfunctions.h \
     texturegenerator.h \
     materialmanager.h \
     scene.h \

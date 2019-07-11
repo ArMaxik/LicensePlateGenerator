@@ -2,7 +2,7 @@
 
 Scene::Scene(Qt3DCore::QNode *parent)
     : Qt3DCore::QEntity(parent)
-    , matMan(new MaterialManager())
+    , matMan(new MaterialManager(this))
     , licensePlate(new RenderableEntity(this, matMan->orangeMaskMaterial()))
     , lightMan(new LightManager(this))
     , camera(new Qt3DRender::QCamera(this))
@@ -38,6 +38,4 @@ void Scene::randomize()
     matMan->randomize();
     licensePlate->randomize();
     lightMan->randomize();
-
-    emit changed();
 }

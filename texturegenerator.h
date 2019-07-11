@@ -12,7 +12,7 @@ class TextureGenerator : public QObject
 {
     Q_OBJECT
 public:
-    TextureGenerator();
+    TextureGenerator(QObject *parent);
 public slots:
     void generateTexture();
 signals:
@@ -21,7 +21,7 @@ signals:
     void orangeMaskGenerated(QImage *orangeMask);
     void heightGenerated(QImage *height);
 private:
-    int id;
+    int font_id;
 };
 
 #endif // TEXTUREGENERATOR_H

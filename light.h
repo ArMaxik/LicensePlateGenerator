@@ -12,8 +12,8 @@ class PointLight : public Qt3DCore::QEntity
     Q_OBJECT
 public:
     PointLight(Qt3DCore::QNode *parent = nullptr);
-    Qt3DRender::QPointLight *getLight();
-    Qt3DCore::QTransform *getTransform();
+    Qt3DRender::QPointLight *getLight() const;
+    Qt3DCore::QTransform *getTransform() const;
 
 public slots:
     void randomize();
