@@ -12,7 +12,7 @@ RenderableEntity::RenderableEntity(Qt3DCore::QNode *parent, Qt3DRender::QMateria
     m_mesh->setWidth(10.0f);
 
     m_transform->setScale(1.0f);
-    m_transform->setTranslation(QVector3D(0.0f, 5.0f, 0.0f));
+    m_transform->setTranslation(QVector3D(0.0f, 5.0f, 0.0f));  // У текущий RenderGraph плохо работает, если меш находится в нулевой точке
     m_transform->setRotationX(QRandomGenerator::global()->bounded(-200, 200)/10);
     m_transform->setRotationY(QRandomGenerator::global()->bounded(-200, 200)/10);
     m_transform->setRotationZ(QRandomGenerator::global()->bounded(-200, 200)/10);
