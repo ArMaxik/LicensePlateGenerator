@@ -35,8 +35,7 @@ SOURCES += \
     scene.cpp \
     renderableentity.cpp \
     light.cpp \
-    texturerendertarget.cpp \
-    textureview.cpp
+    texturerendertarget.cpp
 
 HEADERS += \
     licenseplatemanager.h \
@@ -50,8 +49,7 @@ HEADERS += \
     imagetexture.h \
     renderableentity.h \
     light.h \
-    texturerendertarget.h \
-    textureview.h
+    texturerendertarget.h
 
 RESOURCES += \
     res.qrc

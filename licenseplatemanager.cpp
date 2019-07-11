@@ -11,6 +11,7 @@ LicensePlateManager::LicensePlateManager(QObject *parent)
 
     QObject::connect(renderEngine, &OffscreenEngine::imageRendered,
                      this, &LicensePlateManager::acceptRenderedImage);
+    plateScene->randomize();
     configurePlateImage();
     num = 25;
     savePath = "pic/tmp_";
@@ -37,6 +38,12 @@ void LicensePlateManager::setRenderSize(const QSize &size)
 void LicensePlateManager::setTextureSize(const QSize &size)
 {
 
+}
+
+void LicensePlateManager::stopRender()
+{
+    num = 0;
+    currentState = state::Done;
 }
 
 void LicensePlateManager::newPlate()

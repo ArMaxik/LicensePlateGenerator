@@ -200,7 +200,7 @@ void TextureGenerator::generateTexture()
     QFont font(family);
 
     // Diffuse
-    QImage back("C:/Users/slava/OneDrive/Job/pic/MyFLORIDA_small.png");
+    QImage back(":/pictures/MyFLORIDA_small.png");
     painterD.drawImage(QPoint(0, 0), back);
 
     drawText(painterD, font, QColor(17, 141, 128), mainLbl1, mainLbl2, smallLbl);
@@ -213,7 +213,7 @@ void TextureGenerator::generateTexture()
     drawText(painterH, font, Qt::white, mainLbl1, mainLbl2, smallLbl);
 
     // Orange mask
-    QImage backOM("C:/Users/slava/OneDrive/Job/pic/OrangeMask_small.png");
+    QImage backOM(":/pictures/OrangeMask_small.png");
     painterOM.drawImage(QPoint(0, 0), backOM);
 
     drawText(painterOM, font, Qt::black, mainLbl1, mainLbl2, smallLbl);

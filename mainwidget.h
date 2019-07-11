@@ -17,9 +17,11 @@ public:
     ~MainWidget();
 
 private slots:
-    void on_pushButton_clicked();
-
     void on_buttonChoseSavePath_clicked();
+
+    void on_buttonStopRender_clicked();
+
+    void on_buttonGenerate_clicked();
 
 private:
     Ui::MainWidget *ui;

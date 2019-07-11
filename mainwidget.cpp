@@ -23,13 +23,6 @@ MainWidget::~MainWidget()
     delete lpm;
 }
 
-void MainWidget::on_pushButton_clicked()
-{
-    ui->progressBar->setMaximum(ui->numberOfRendering->value());
-    ui->progressBar->setValue(0);
-    lpm->generate(ui->numberOfRendering->value(), ui->savePath->text() + ui->saveFileName->text());
-}
-
 void MainWidget::on_buttonChoseSavePath_clicked()
 {
     ui->savePath->setText(
@@ -39,4 +32,18 @@ void MainWidget::on_buttonChoseSavePath_clicked()
                          , ""
                          , QFileDialog::ShowDirsOnly
                          | QFileDialog::DontResolveSymlinks) + "/");
+}
+
+void MainWidget::on_buttonStopRender_clicked()
+{
+    lpm->stopRender();
+    ui->buttonStopRender->setEnabled(false);
+}
+
+void MainWidget::on_buttonGenerate_clicked()
+{
+    ui->progressBar->setMaximum(ui->numberOfRendering->value());
+    ui->progressBar->setValue(0);
+    ui->buttonStopRender->setEnabled(true);
+    lpm->generate(ui->numberOfRendering->value(), ui->savePath->text() + ui->saveFileName->text());
 }

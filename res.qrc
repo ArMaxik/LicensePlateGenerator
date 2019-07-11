@@ -3,4 +3,8 @@
         <file>PlateFont.ttf</file>
         <file>Driver Gothic.otf</file>
     </qresource>
+    <qresource prefix="/pictures">
+        <file>MyFLORIDA_small.png</file>
+        <file>OrangeMask_small.png</file>
+    </qresource>
 </RCC>

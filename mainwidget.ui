@@ -91,7 +91,7 @@
       <item>
        <widget class="QLabel" name="labelFileName">
         <property name="text">
-         <string>Путь сохранения</string>
+         <string>Название файла</string>
         </property>
        </widget>
       </item>
@@ -107,7 +107,7 @@
     <item>
      <layout class="QHBoxLayout" name="hLayoutButtonPanel">
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="buttonGenerate">
         <property name="focusPolicy">
          <enum>Qt::StrongFocus</enum>
         </property>
@@ -116,6 +116,19 @@
         </property>
         <property name="text">
          <string>Сгенерировать</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="buttonStopRender">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Остановить</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
         </property>
        </widget>
       </item>

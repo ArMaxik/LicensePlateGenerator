@@ -23,7 +23,7 @@ public slots:
     void generate(int number, const QString &_savePath);
     void setRenderSize(const QSize &size);
     void setTextureSize(const QSize &size);
-    void newPlate();  // Make private
+    void stopRender();
     void Preview();
 
 private slots:
@@ -33,6 +33,7 @@ private:
     enum state { WaitingPicture, WaitingOrangeMask, Done };
     state currentState;
 
+    void newPlate();
     void configurePlateImage();
     void configureOrangeMask();
 
